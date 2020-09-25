@@ -32,9 +32,15 @@ def checkout(request):
 
 def updateItem(request):
      data = json.load(request.data)
-     profuctId = data['profuctId']
+     productId = data['productId']
      action = data['action']
-     print('Action:', action)
-     print('profuctId:', profuctId)
-     return JsonResponse('Item was added', safe=False)
      
+     print('Action:', action)
+     print('productId:', productId)
+
+     customer = recuest.user.customer
+     product = Product.object.get(id=productId)
+     order, created = Order.objects.get_or_create(customer=customer, complete=False)
+     orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+     return JsonResponse('Item was added', safe=False)
+

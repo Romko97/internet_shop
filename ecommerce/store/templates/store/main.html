@@ -11,7 +11,7 @@
     
     <script type="text/javascript">
       let user = '{{request.user}}'
-      
+
       function getToken(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -64,6 +64,8 @@ const csrftoken = getToken('csrftoken');
             <br>
             {% block content %}
 
+
+            
 
              {% endblock content %}
      </div>
