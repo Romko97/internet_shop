@@ -8,9 +8,9 @@ for ( let i = 0; i < updateBtns.length; i++){
         
         console.log('USER:', user);
         if (user === 'AnonymousUser'){
-            console.log('Not logged in')
+            console.log('Not logged in');
         }else{
-            UpdateUserOrder(productId, action)
+            UpdateUserOrder(productId, action);
         }
     
     })
@@ -18,22 +18,17 @@ for ( let i = 0; i < updateBtns.length; i++){
 
 function UpdateUserOrder(productId, action){
     console.log('User is logged in, sending data...');
-    let url = '/update_item/'
+
+    var url = '/update_item/'
 
     fetch(url, {
         method: 'POST',
-        headers: {
-            'Content-Type':'aplication/json',
-            'X-CSRFToken':csrftoken
+        headers:{
+            'Content-Type':'application/json',
+            'X-CSRFToken':csrftoken,
         },
-        body: JSON.stringify({'productId':productId, 'action':action})
+        body:JSON.stringify({'productId':productId, 'action':action})
     })
-
-    .then((response)=> {
-        return response.json()
-    })
-
-    .then((data) => {
-        console.log('data:', data)
-    })
+    .then((response) => {return response.json()})
+    .then((data) => {console.log('data:', data)})
 }
