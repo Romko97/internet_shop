@@ -68,6 +68,12 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    let shipping = '{{order.shipping}}'
 
+    if (shipping == 'False'){
+        document.getElementById('shipping-info').innerHTML = ''
+    }
+</script>
 
 {% endblock content %}
