@@ -5,6 +5,10 @@ import datetime
 from .models import *
 from . utils import *
 
+def login(request):
+     # render the login page for user can register or login 
+     pass
+
 def store(request):
     
      data = cartData(request)
