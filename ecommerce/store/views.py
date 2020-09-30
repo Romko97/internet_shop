@@ -5,9 +5,9 @@ import datetime
 from .models import *
 from . utils import *
 
-def login(request):
+def UserLogin(request):
      # render the login page for user can register or login 
-     pass
+     return render(request, 'store/UserLogin.html')
 
 def store(request):
     
