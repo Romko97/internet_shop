@@ -43,7 +43,8 @@
         <br>
         <div class="box-element hidden" id="payment-info">
             <small>Paypal Options</small>
-            <button id='make-payment'>Заплатити</button>
+            <button id='make-payment' action="{% url 'email' %}">Заплатити</button>
+            <button action="{% url 'email' %}">Email</button>
         </div>
         
     </div>
