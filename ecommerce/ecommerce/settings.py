@@ -135,4 +135,4 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True # tells django what secure protocol should be used to connect to the server
 EMAIL_PORT = 587 # you can not use both of them at once. If you use TLS the EMAIL_PORT = 587 but if you use SSL the port = 465.
 EMAIL_HOST_USER = 'elgoog6651@gmail.com'
-EMAIL_HOST_PASSWORD = 'yjdbqgfhjkm95175355' #note that the password is visible here and someone can just see it and use it so it will have to be encrypted
+EMAIL_HOST_PASSWORD = 'Gfhjkmueukfnht,f<thtunb95175355' #note that the password is visible here and someone can just see it and use it so it will have to be encrypted
