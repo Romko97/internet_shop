@@ -98,3 +98,11 @@ def processOrder(request):
           )
 
      return JsonResponse('Payment complete', safe=False)
+
+
+def detailView(request, pk):
+     data = cartData(request)
+     cartItems = data['cartItems']
+     product = Product.objects.get(pk=pk)
+     context = {'product':product, 'cartItems':cartItems}
+     return render(request, 'store/detailView.html', context)
