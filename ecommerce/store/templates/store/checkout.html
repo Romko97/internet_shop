@@ -16,42 +16,42 @@
                 
                 <div id="shipping-info">
                     <hr>
-                    <p>Shipping Information:</p>
+                    <p>Форма оформлення замовлення:</p>
                     <hr>
                     <div class="form-field">
-                        <input class="form-control" type="text" name="address" placeholder="Address..">
+                        <input class="form-control" type="text" name="address" placeholder="Адреса..">
                     </div>
                     <div class="form-field">
-                        <input class="form-control" type="text" name="city" placeholder="City..">
+                        <input class="form-control" type="text" name="city" placeholder="Місто..">
                     </div>
                     <div class="form-field">
-                        <input class="form-control" type="text" name="state" placeholder="State..">
+                        <input class="form-control" type="text" name="state" placeholder="Область..">
                     </div>
                     <div class="form-field">
-                        <input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
+                        <input class="form-control" type="text" name="zipcode" placeholder="Поштовий індекс..">
                     </div>
                     <div class="form-field">
-                        <input class="form-control" type="text" name="country" placeholder="Zip code..">
+                        <input class="form-control" type="text" name="phone" placeholder="Номер телефону">
                     </div>
+
                 </div>
 
                 <hr>
-                <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+                <input href="{% url 'email' %}" id="form-button" class="btn btn-success btn-block" type="submit" value="Продовжити">
             </form>
         </div>
 
         <br>
         <div class="box-element hidden" id="payment-info">
-            <small>Paypal Options</small>
-            <button id='make-payment' action="{% url 'email' %}">Заплатити</button>
-            <button action="{% url 'email' %}">Email</button>
+            
+            <button class="btn btn-success btn-lg"  type="button" id='make-payment' >Замовити</button>
         </div>
         
     </div>
 
     <div class="col-lg-6">
         <div class="box-element">
-            <a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+            <a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; вернутися</a>
             <hr>
             <h3>Підсумок замовлення</h3>
             <hr>
