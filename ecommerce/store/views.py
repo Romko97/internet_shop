@@ -4,7 +4,7 @@ import json
 import datetime
 from .models import *
 from . utils import *
-
+from django.core.mail import send_mail
 
 def store(request):
     
@@ -100,14 +100,14 @@ def processOrder(request):
 
      return JsonResponse('Payment complete', safe=False)
 
-# def email(request):
-#     subject = 'Thank you for registering to our site'
-#     message = ' it  means a world to us '
-#     email_from = settings.EMAIL_HOST_USER
-#     recipient_list = ['romanhalychanivskyi@gmail.com',]
-#     send_mail( subject, message, email_from, recipient_list )
-#     print("fuck you")
-#     return render(request, 'store/checkout.html')
+def email(request):
+    subject = 'Thank you for registering to our site'
+    message = ' it  means a world to us '
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = ['romanhalychanivskyi@gmail.com',]
+    send_mail( subject, message, email_from, recipient_list )
+    print("fuck you")
+    return render(request, 'store/checkout.html')
     
 
 def detailView(request, pk):
