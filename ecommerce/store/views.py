@@ -5,6 +5,7 @@ import datetime
 from .models import *
 from . utils import *
 from django.core.mail import send_mail
+from django.conf import settings
 
 
 def store(request):
@@ -29,11 +30,6 @@ def checkout(request):
      cartItems = data['cartItems']
      order = data['order']
      items = data['items']
-     # """""""""""""""""OLD CODE"""""""""""""""""
-     # items = []
-     # order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
-     # cartItems = order['get_cart_items']
-
      context = {'items':items, 'order':order, 'cartItems':cartItems}
      return render(request, 'store/checkout.html', context)
 
@@ -58,6 +54,14 @@ def updateItem(request):
      return JsonResponse('Item was added', safe=False)
 
 
+def detailView(request, pk):
+     data = cartData(request)
+     cartItems = data['cartItems']
+     product = Product.objects.get(pk=pk)
+     context = {'product':product, 'cartItems':cartItems}
+     return render(request, 'store/detailView.html', context)
+
+
 def processOrder(request):
      transaction_id = datetime.datetime.now().timestamp()
      data = json.loads(request.body)
@@ -79,22 +83,22 @@ def processOrder(request):
                city=data['shipping']['city'],
                state=data['shipping']['state'],
                zipcode=data['shipping']['zipcode'],)
+
+     subject = 'НОВЕ ЗАМОВЛЕННЯ'
+     print('customer :', customer, 'order :', order, 'data :', data)
+     message = f"""Замовлення ID: {transaction_id} \n
+                    ІМ'Я : {data['form']['name']} \n 
+                    EMAIL : {data['form']['email']} \n 
+                    СУМА : {data['form']['name']} \n 
+                    ТЕЛЕФОН : {data['form']['name']} \n 
+                    АДРЕСА : {data['shipping']['address']} \n 
+                    МІСТО : {data['shipping']['city']} \n 
+                    ОБЛАСТЬ : {data['shipping']['state']} \n 
+                    ПОШТОВИЙ КОД : {data['shipping']['zipcode']} \n """
+     email_from = settings.EMAIL_HOST_USER
+     recipient_list = ['romanhalychanivskyi@gmail.com',]
+     send_mail( subject, message, email_from, recipient_list )
+     print("EMAIL WAS SEND")
      return JsonResponse('Payment complete', safe=False)
 
-def email(request):
-    subject = 'Thank you for registering to our site'
-    message = ' it  means a world to us '
-    email_from = settings.EMAIL_HOST_USER
-    recipient_list = ['romanhalychanivskyi@gmail.com',]
-    send_mail( subject, message, email_from, recipient_list )
-    print("fuck you")
-    return render(request, 'store/checkout.html')
-    
 
-def detailView(request, pk):
-     data = cartData(request)
-     cartItems = data['cartItems']
-     product = Product.objects.get(pk=pk)
-     context = {'product':product, 'cartItems':cartItems}
-     print("fuck you")
-     return render(request, 'store/detailView.html', context)

@@ -37,14 +37,14 @@
                 </div>
 
                 <hr>
-                <input href="{% url 'email' %}" id="form-button" class="btn btn-success btn-block" type="submit" value="Продовжити">
+                <input  id="form-button" class="btn btn-success btn-block" type="submit" value="Продовжити">
             </form>
         </div>
 
         <br>
         <div class="box-element hidden" id="payment-info">
             
-            <button class="btn btn-success btn-lg"  type="button" id='make-payment' >Замовити</button>
+            <button class="btn btn-success btn-lg"  type="button" id='make-payment'>Замовити</button>
         </div>
         
     </div>
@@ -71,8 +71,9 @@
 </div>
 
 <script type="text/javascript">
-    let shipping = '{{order.shipping}}'
-    let total = '{{order.get_cart_total}}'
+    let shipping = '{{order.shipping}}';
+    let total = '{{order.get_cart_total}}';
+    
 
     if (shipping == 'False'){
         document.getElementById('shipping-info').innerHTML = 'Вибачте товар відсутній на складі'
@@ -95,7 +96,7 @@
         document.getElementById('form-button').classList.add('hidden')
         document.getElementById('payment-info').classList.remove('hidden')
     })
-        document.getElementById('make-payment').addEventListener('click', function(e){
+        document.getElementById('make-payment').addEventListener('click', function(e){   
         submitFormData()
     })
 
@@ -126,7 +127,7 @@
         }
 
         const url = '/process_order/'
-
+        
         fetch(url, {
             method: 'POST',
             headers:{
