@@ -4,6 +4,8 @@ import json
 import datetime
 from .models import *
 from . utils import *
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 def store(request):
@@ -28,13 +30,16 @@ def checkout(request):
      cartItems = data['cartItems']
      order = data['order']
      items = data['items']
-     # """""""""""""""""OLD CODE"""""""""""""""""
-     # items = []
-     # order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
-     # cartItems = order['get_cart_items']
-
      context = {'items':items, 'order':order, 'cartItems':cartItems}
      return render(request, 'store/checkout.html', context)
+
+
+def detailView(request, pk):
+     data = cartData(request)
+     cartItems = data['cartItems']
+     product = Product.objects.get(pk=pk)
+     context = {'product':product, 'cartItems':cartItems}
+     return render(request, 'store/detailView.html', context)
 
 
 def updateItem(request):
@@ -60,6 +65,7 @@ def updateItem(request):
 def processOrder(request):
      transaction_id = datetime.datetime.now().timestamp()
      data = json.loads(request.body)
+     itemsData = cartData(request)
      if request.user.is_authenticated:
           customer = request.user.customer
           order, created = Order.objects.get_or_create(customer=customer, complete=False)
@@ -70,6 +76,7 @@ def processOrder(request):
      if total == order.get_cart_total:
           order.complete = True
      order.save()
+     EmailSender(data, transaction_id, itemsData,customer,total)
      if order.shipping == True:
           ShippingAdress.objects.create(
                customer=customer,
@@ -80,10 +87,34 @@ def processOrder(request):
                zipcode=data['shipping']['zipcode'],)
      return JsonResponse('Payment complete', safe=False)
 
-
-def detailView(request, pk):
-     data = cartData(request)
-     cartItems = data['cartItems']
-     product = Product.objects.get(pk=pk)
-     context = {'product':product, 'cartItems':cartItems}
-     return render(request, 'store/detailView.html', context)
+def EmailSender(data,transaction_id,itemsData,customer,total):
+     items=itemsData['items']
+     order =itemsData['order']
+     forEmail=[]
+     for i in items:
+         forEmail.append(str(i.product.name) + ' Ціна :' + str(i.product.price) + ' Кількість -' + str(i.quantity)+'\n' )
+     nameOfItem = ''
+     for i in forEmail:
+          nameOfItem = nameOfItem + i
+     subject = f'НОВЕ ЗАМОВЛЕННЯ: {order} '
+     message = f""" Замовлення ID: {transaction_id} \n
+                    Замовлення №   {order}
+                    Час Замовлення {datetime.datetime.now()}
+                    USERNAME:      {customer}
+                    EMAIL :        {data['form']['email']}
+                    ІМ'Я :         {data['form']['name']} 
+                    ТЕЛЕФОН :      {data['shipping']['phone']} \n
+                    ****************************\n
+                    АДРЕСА :       {data['shipping']['address']} 
+                    МІСТО :        {data['shipping']['city']} 
+                    ОБЛАСТЬ :      {data['shipping']['state']} 
+                    ПОШТОВИЙ КОД : {data['shipping']['zipcode']} 
+                    КОМЕНТАРІЙ :   {data['shipping']['comment']}\n
+                    ТОВАРИ :       {nameOfItem}
+                    КІЛЬКІСТЬ :    {order.get_cart_items}
+                    ДО ОПЛАТИ :    {total} 
+                     """
+     email_from = settings.EMAIL_HOST_USER
+     recipient_list = ['romanhalychanivskyi@gmail.com',]
+     send_mail( subject, message, email_from, recipient_list)
+     print("EMAIL WAS SEND")

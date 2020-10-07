@@ -129,3 +129,10 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/images/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' #specifies the django backend that will work with the host email
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True # tells django what secure protocol should be used to connect to the server
+EMAIL_PORT = 587 # you can not use both of them at once. If you use TLS the EMAIL_PORT = 587 but if you use SSL the port = 465.
+EMAIL_HOST_USER = 'elgoog6651@gmail.com'
+EMAIL_HOST_PASSWORD = 'cqgehahieiccpiix' #note that the password is visible here and someone can just see it and use it so it will have to be encrypted
