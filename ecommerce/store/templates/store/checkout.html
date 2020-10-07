@@ -31,8 +31,12 @@
                         <input class="form-control" type="text" name="zipcode" placeholder="Поштовий індекс..">
                     </div>
                     <div class="form-field">
-                        <input class="form-control" type="text" name="phone" placeholder="Номер телефону">
+                        <input class="form-control" type="text" name="phone" placeholder="Номер телефону...">
                     </div>
+                    <div class="form-field">
+                        <input class="form-control" type="text" name="comment" placeholder="Коментарій...">
+                    </div>
+
 
                 </div>
 
@@ -112,6 +116,8 @@
             'city':null,
             'state':null,
             'zipcode':null,
+            'phone':null,
+            'comment':null,
         }
     
         if (shipping != 'False'){
@@ -119,6 +125,8 @@
          shippingInfo.city = form.city.value
          shippingInfo.state = form.state.value
          shippingInfo.zipcode = form.zipcode.value
+         shippingInfo.phone = form.phone.value
+         shippingInfo.comment = form.comment.value
         }
     
         if (user == 'AnonymousUser'){

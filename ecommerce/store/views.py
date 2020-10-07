@@ -34,6 +34,14 @@ def checkout(request):
      return render(request, 'store/checkout.html', context)
 
 
+def detailView(request, pk):
+     data = cartData(request)
+     cartItems = data['cartItems']
+     product = Product.objects.get(pk=pk)
+     context = {'product':product, 'cartItems':cartItems}
+     return render(request, 'store/detailView.html', context)
+
+
 def updateItem(request):
      data = json.loads(request.body)
      productId = data['productId']
@@ -54,17 +62,10 @@ def updateItem(request):
      return JsonResponse('Item was added', safe=False)
 
 
-def detailView(request, pk):
-     data = cartData(request)
-     cartItems = data['cartItems']
-     product = Product.objects.get(pk=pk)
-     context = {'product':product, 'cartItems':cartItems}
-     return render(request, 'store/detailView.html', context)
-
-
 def processOrder(request):
      transaction_id = datetime.datetime.now().timestamp()
      data = json.loads(request.body)
+     itemsData = cartData(request)
      if request.user.is_authenticated:
           customer = request.user.customer
           order, created = Order.objects.get_or_create(customer=customer, complete=False)
@@ -75,6 +76,7 @@ def processOrder(request):
      if total == order.get_cart_total:
           order.complete = True
      order.save()
+     EmailSender(data, transaction_id, itemsData,customer,total)
      if order.shipping == True:
           ShippingAdress.objects.create(
                customer=customer,
@@ -83,22 +85,36 @@ def processOrder(request):
                city=data['shipping']['city'],
                state=data['shipping']['state'],
                zipcode=data['shipping']['zipcode'],)
-
-     subject = 'НОВЕ ЗАМОВЛЕННЯ'
-     print('customer :', customer, 'order :', order, 'data :', data)
-     message = f"""Замовлення ID: {transaction_id} \n
-                    ІМ'Я : {data['form']['name']} \n 
-                    EMAIL : {data['form']['email']} \n 
-                    СУМА : {data['form']['name']} \n 
-                    ТЕЛЕФОН : {data['form']['name']} \n 
-                    АДРЕСА : {data['shipping']['address']} \n 
-                    МІСТО : {data['shipping']['city']} \n 
-                    ОБЛАСТЬ : {data['shipping']['state']} \n 
-                    ПОШТОВИЙ КОД : {data['shipping']['zipcode']} \n """
-     email_from = settings.EMAIL_HOST_USER
-     recipient_list = ['romanhalychanivskyi@gmail.com',]
-     send_mail( subject, message, email_from, recipient_list )
-     print("EMAIL WAS SEND")
      return JsonResponse('Payment complete', safe=False)
 
-
+def EmailSender(data,transaction_id,itemsData,customer,total):
+     items=itemsData['items']
+     order =itemsData['order']
+     forEmail=[]
+     for i in items:
+         forEmail.append(str(i.product.name) + ' Ціна :' + str(i.product.price) + ' Кількість -' + str(i.quantity)+'\n' )
+     nameOfItem = ''
+     for i in forEmail:
+          nameOfItem = nameOfItem + i
+     subject = f'НОВЕ ЗАМОВЛЕННЯ: {order} '
+     message = f""" Замовлення ID: {transaction_id} \n
+                    Замовлення №   {order}
+                    Час Замовлення {datetime.datetime.now()}
+                    USERNAME:      {customer}
+                    EMAIL :        {data['form']['email']}
+                    ІМ'Я :         {data['form']['name']} 
+                    ТЕЛЕФОН :      {data['shipping']['phone']} \n
+                    ****************************\n
+                    АДРЕСА :       {data['shipping']['address']} 
+                    МІСТО :        {data['shipping']['city']} 
+                    ОБЛАСТЬ :      {data['shipping']['state']} 
+                    ПОШТОВИЙ КОД : {data['shipping']['zipcode']} 
+                    КОМЕНТАРІЙ :   {data['shipping']['comment']}\n
+                    ТОВАРИ :       {nameOfItem}
+                    КІЛЬКІСТЬ :    {order.get_cart_items}
+                    ДО ОПЛАТИ :    {total} 
+                     """
+     email_from = settings.EMAIL_HOST_USER
+     recipient_list = ['romanhalychanivskyi@gmail.com',]
+     send_mail( subject, message, email_from, recipient_list)
+     print("EMAIL WAS SEND")
