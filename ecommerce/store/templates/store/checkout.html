@@ -5,6 +5,7 @@
     <div class="col-lg-6">
         <div class="box-element" id="form-wrapper">
             <form id="form">
+                <!-- ######################### -->
                 <div id="user-info">
                     <div class="form-field">
                         <input required class="form-control" type="text" name="name" placeholder="Name..">
@@ -13,7 +14,7 @@
                         <input required class="form-control" type="email" name="email" placeholder="Email..">
                     </div>
                 </div>
-                
+                <!-- ######################### -->
                 <div id="shipping-info">
                     <hr>
                     <p>Форма оформлення замовлення:</p>
@@ -36,15 +37,13 @@
                     <div class="form-field">
                         <input class="form-control" type="text" name="comment" placeholder="Коментарій...">
                     </div>
-
-
                 </div>
-
+                <!-- ######################-->
                 <hr>
                 <input  id="form-button" class="btn btn-success btn-block" type="submit" value="Продовжити">
             </form>
         </div>
-
+<!-- ################################################### -->
         <br>
         <div class="box-element hidden" id="payment-info">
             
@@ -52,7 +51,7 @@
         </div>
         
     </div>
-
+<!-- ################################################### -->
     <div class="col-lg-6">
         <div class="box-element">
             <a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; вернутися</a>

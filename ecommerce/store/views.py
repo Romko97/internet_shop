@@ -9,9 +9,7 @@ from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
 
-# def UserLogin(request):
-#      # render the login page for user can register or login 
-#      return render(request, 'store/UserLogin.html')
+
 
 def store(request):
      data = cartData(request)
@@ -81,7 +79,6 @@ def processOrder(request):
      if total == order.get_cart_total:
           order.complete = True
      order.save()
-     EmailSender(data, transaction_id, itemsData,customer,total)
      if order.shipping == True:
           ShippingAdress.objects.create(
                customer=customer,
@@ -90,6 +87,7 @@ def processOrder(request):
                city=data['shipping']['city'],
                state=data['shipping']['state'],
                zipcode=data['shipping']['zipcode'],)
+     EmailSender(data, transaction_id, itemsData,customer,total)          
      return JsonResponse('Payment complete', safe=False)
 
 def EmailSender(data,transaction_id,itemsData,customer,total):
@@ -144,3 +142,9 @@ def signup(request):
           form = UserCreationForm()
      context = {'form': form}
      return render(request, 'store/signup.html', context)
+
+def Login(request): 
+    return render(request, 'store/UserLogin.html')
+
+# def Logout(request):
+#      pass

@@ -64,3 +64,6 @@ function addCookieItem(productId, action){
 	location.reload()
 }
 
+if (user != 'AnonymousUser'){
+    document.getElementById('LoginId').innerHTML='привіт ' + user
+}
