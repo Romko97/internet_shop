@@ -27,7 +27,9 @@ def cart(request):
      context = {'items':items, 'order':order, 'cartItems':cartItems}
      return render(request, 'store/cart.html', context)
 
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def checkout(request):
      data = cartData(request)
      cartItems = data['cartItems']
@@ -64,7 +66,7 @@ def updateItem(request):
           orderItem.delete()
      return JsonResponse('Item was added', safe=False)
 
-
+@csrf_exempt
 def processOrder(request):
      transaction_id = datetime.datetime.now().timestamp()
      data = json.loads(request.body)
@@ -95,7 +97,7 @@ def EmailSender(data,transaction_id,itemsData,customer,total):
      order =itemsData['order']
      forEmail=[]
      for i in items:
-         forEmail.append(str(i.product.name) + ' Ціна :' + str(i.product.price) + ' Кількість -' + str(i.quantity)+'\n' )
+          forEmail.append(str(i.product.name) + ' Ціна :' + str(i.product.price) + ' Кількість -' + str(i.quantity)+'\n' )
      nameOfItem = ''
      for i in forEmail:
           nameOfItem = nameOfItem + i

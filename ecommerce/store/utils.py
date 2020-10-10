@@ -1,17 +1,19 @@
 import json
-from . models import *
+from .models import *
 
 
 def cookieCart(request):
+    #Create empty cart for now for non-logged in user
     try:
         cart = json.loads(request.COOKIES['cart'])
     except:
         cart = {}
-    print('Cart: ', cart)
+        print('Cart: ', cart)
     items = []
     order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
     cartItems = order['get_cart_items']
     for i in cart:
+        #We use try block to prevent items in cart that may have been removed from causing error
         try:
             cartItems += cart[i]['quantity']
             product = Product.objects.get(id=i)
@@ -19,6 +21,7 @@ def cookieCart(request):
             order['get_cart_total'] += total
             order['get_cart_items'] += cart[i]['quantity']
             item = {
+                'id':product.id,
                 'product':{
                     'id':product.id,
                     'name':product.name,
@@ -50,7 +53,7 @@ def cartData(request):
 
 def guestOrder(request, data):
     print('User is not logged in...')
-    print('COOKIES:', request.cookies)
+    #print('COOKIES:', request.cookies)
     name = data['form']['name']
     email = data['form']['email']
     cookieData = cookieCart(request)
