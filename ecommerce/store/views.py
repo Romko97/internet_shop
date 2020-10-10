@@ -89,15 +89,22 @@ def processOrder(request):
                city=data['shipping']['city'],
                state=data['shipping']['state'],
                zipcode=data['shipping']['zipcode'],)
-     EmailSender(data, transaction_id, itemsData,customer,total)          
+     EmailSender(request, data, transaction_id, itemsData,customer,total)          
      return JsonResponse('Payment complete', safe=False)
 
-def EmailSender(data,transaction_id,itemsData,customer,total):
+def EmailSender(request,data,transaction_id,itemsData,customer,total):
      items=itemsData['items']
      order =itemsData['order']
      forEmail=[]
-     for i in items:
-          forEmail.append(str(i.product.name) + ' Ціна :' + str(i.product.price) + ' Кількість -' + str(i.quantity)+'\n' )
+     if request.user.is_authenticated:
+          for i in items:
+               forEmail.append(str(i.product.name) + ' Ціна :' + str(i.product.price) + ' Кількість -' + str(i.quantity)+'\n' )
+               QuantityOfItemsInOrder = order.get_cart_items
+     else:
+          QuantityOfItemsInOrder = order['get_cart_items']
+          order = f'''незареєстрований user {data['form']['name']}'''
+          for i in items:
+               forEmail.append(str(i['product']['name']) + ' Ціна :' + str(i['product']['price']) + ' Кількість -' + str(i['quantity'])+'\n' )
      nameOfItem = ''
      for i in forEmail:
           nameOfItem = nameOfItem + i
@@ -116,14 +123,14 @@ def EmailSender(data,transaction_id,itemsData,customer,total):
                     ПОШТОВИЙ КОД : {data['shipping']['zipcode']} 
                     КОМЕНТАРІЙ :   {data['shipping']['comment']}\n
                     ТОВАРИ :       {nameOfItem}
-                    КІЛЬКІСТЬ :    {order.get_cart_items}
+                    КІЛЬКІСТЬ:     {QuantityOfItemsInOrder}
                     ДО ОПЛАТИ :    {total} 
                      """
      email_from = settings.EMAIL_HOST_USER
      recipient_list = ['romanhalychanivskyi@gmail.com']
      send_mail( subject, message, email_from, recipient_list)
      print("EMAIL WAS SEND")
-
+     
 # 'yryna2016@gmail.com',
 
 def signup(request):
