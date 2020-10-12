@@ -136,3 +136,6 @@ EMAIL_USE_TLS = True # tells django what secure protocol should be used to conne
 EMAIL_PORT = 587 # you can not use both of them at once. If you use TLS the EMAIL_PORT = 587 but if you use SSL the port = 465.
 EMAIL_HOST_USER = 'elgoog6651@gmail.com'
 EMAIL_HOST_PASSWORD = 'cqgehahieiccpiix' #note that the password is visible here and someone can just see it and use it so it will have to be encrypted
+
+
+ALLOWED_HOSTS = ['https://git.heroku.com/chuvachi.git', '127.0.0.1']
