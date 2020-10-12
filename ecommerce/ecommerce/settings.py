@@ -138,4 +138,4 @@ EMAIL_HOST_USER = 'elgoog6651@gmail.com'
 EMAIL_HOST_PASSWORD = 'cqgehahieiccpiix' #note that the password is visible here and someone can just see it and use it so it will have to be encrypted
 
 
-ALLOWED_HOSTS = ['https://git.heroku.com/chuvachi.git', '127.0.0.1']
+ALLOWED_HOSTS = ['chuvachi.herokuapp.com', '127.0.0.1']
