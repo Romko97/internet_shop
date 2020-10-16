@@ -102,7 +102,7 @@ def EmailSender(request,data,transaction_id,itemsData,customer,total):
                QuantityOfItemsInOrder = order.get_cart_items
      else:
           QuantityOfItemsInOrder = order['get_cart_items']
-          order = f'''незареєстрований user {data['form']['name']}'''
+          order = f''' ВІД  {data['form']['name']}'''
           for i in items:
                forEmail.append(str(i['product']['name']) + ' Ціна :' + str(i['product']['price']) + ' Кількість -' + str(i['quantity'])+'\n' )
      nameOfItem = ''
@@ -127,11 +127,10 @@ def EmailSender(request,data,transaction_id,itemsData,customer,total):
                     ДО ОПЛАТИ :    {total} 
                      """
      email_from = settings.EMAIL_HOST_USER
-     recipient_list = ['romanhalychanivskyi@gmail.com']
+     recipient_list = ['romanhalychanivskyi@gmail.com','yryna2016@gmail.com','Kabanyura@meta.ua']
      send_mail( subject, message, email_from, recipient_list)
      print("EMAIL WAS SEND")
      
-# 'yryna2016@gmail.com',
 
 def signup(request):
      if request.method == 'POST':
