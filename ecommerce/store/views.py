@@ -127,7 +127,7 @@ def EmailSender(request,data,transaction_id,itemsData,customer,total):
                     ДО ОПЛАТИ :    {total} 
                      """
      email_from = settings.EMAIL_HOST_USER
-     recipient_list = ['romanhalychanivskyi@gmail.com','yryna2016@gmail.com','Kabanyura@meta.ua']
+     recipient_list = ['romanhalychanivskyi@gmail.com']#,'yryna2016@gmail.com','Kabanyura@meta.ua'
      send_mail( subject, message, email_from, recipient_list)
      print("EMAIL WAS SEND")
      
