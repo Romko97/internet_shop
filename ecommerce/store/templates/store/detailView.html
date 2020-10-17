@@ -13,17 +13,23 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="box-element">
-        
-    <div class="col-md-8">
+            <button  data-product = {{product.id}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Додати в кошик</button>
+            <h4 style="display: inline-block; float: right"><strong>₴ {{product.price|floatformat:2}}</strong></h4>
+            <h5>Розміри :</h5>
+        </div>
+
+        <div class="box-element">
+
+
+
+        <div class="col-md-8">
         <img  src="{{product.image.url}}" alt ="вибачте фото тимчасово відсутне, зверніться до адміністратора сайту." >
         <div class="col-md-4">
             <!-- <h5>Опис товару:</h5>
             <p>{{ project.description }}</p>
             <br> -->
         </div>
-        <button  data-product = {{product.id}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Додати в кошик</button>
-        <h4 style="display: inline-block; float: right"><strong>₴ {{product.price|floatformat:2}}</strong></h4>
-
+        
         
     </div>
     </div>
