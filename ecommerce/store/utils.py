@@ -13,7 +13,7 @@ def cookieCart(request):
     order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
     cartItems = order['get_cart_items']
     for i in cart:
-        #We use try block to prevent items in cart that may have been removed from causing error
+        #We use try block to prevent items in cart that may have been removed from causing error 
         try:
             cartItems += cart[i]['quantity']
             product = Product.objects.get(id=i)
@@ -68,4 +68,4 @@ def guestOrder(request, data):
     		product=product,
     		order=order,
     		quantity=item['quantity'],)
-    return customer, order
+    return customer, order 
