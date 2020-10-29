@@ -14,6 +14,7 @@ class Product(models.Model):
     price_Old = models.DecimalField(max_digits=7, decimal_places=2,default=False)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     digital = models.BooleanField(default=False, null=True, blank=False)
+    size = models.CharField(max_length=200, null=True)
     image = models.ImageField(null=True, blank=True)
     
     def __str__(self):
